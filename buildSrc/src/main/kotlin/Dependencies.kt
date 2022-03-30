@@ -1,5 +1,5 @@
 object Versions {
-    const val gradleAndroidPlugin = "7.0.0"
+    const val gradleAndroidPlugin = "7.1.2"
     const val detektPlugin = "1.17.1"
     const val navSafeArgs = "2.3.5"
     const val atomicfu = "0.16.2"
