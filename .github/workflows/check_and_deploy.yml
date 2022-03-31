@@ -1,0 +1,58 @@
+name: Test an Deploy apk
+
+# Action that will be executed when pushed on master branch
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Unit Tests
+        run: ./gradlew test
+
+  # macOS for hardware acceleration
+#  android_tests:
+#    runs-on: macos-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Instrumentation Tests
+#        uses: reactivecircus/android-emulator-runner@v2
+#        with:
+#          api-level: 29
+#          script: ./gradlew connectedAndroidTest
+
+  build:
+    needs: [ unit_tests ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Generate Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Sign APK
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: app_release.apk
+          path: ${{ steps.sign_app.outputs.signedReleaseFile }}
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: mapping.txt
+          path: app/build/outputs/mapping/release/mapping.txt

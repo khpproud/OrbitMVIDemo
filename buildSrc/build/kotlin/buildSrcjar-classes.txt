@@ -1,1 +1,0 @@
-/Users/patrick/sample_source/libs/arch/demo/OrbitMVIDemoPost/buildSrc/build/classes/kotlin/main/PluginDependencies.class:/Users/patrick/sample_source/libs/arch/demo/OrbitMVIDemoPost/buildSrc/build/classes/kotlin/main/ProjectDependencies.class:/Users/patrick/sample_source/libs/arch/demo/OrbitMVIDemoPost/buildSrc/build/classes/kotlin/main/Versions.class
